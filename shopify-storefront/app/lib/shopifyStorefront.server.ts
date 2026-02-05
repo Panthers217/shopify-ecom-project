@@ -74,7 +74,7 @@ async function getAccessTokenViaOAuth(): Promise<string> {
   // Tokens typically expire in 24 hours, cache for 23 hours to be safe
   tokenExpiresAt = Date.now() + (23 * 60 * 60 * 1000);
   
-  return cachedAccessToken;
+  return cachedAccessToken as string;
 }
 
 /**
@@ -90,10 +90,18 @@ async function getAccessToken(): Promise<string> {
   return await getAccessTokenViaOAuth();
 }
 
-export async function storefrontAPI<T>({
-  query,
-  variables = {},
-}: StorefrontAPIOptions): Promise<T> {
+/**
+ * Main Storefront API fetch function
+ * Makes GraphQL requests to Shopify Storefront API
+ * 
+ * @param query - GraphQL query string
+ * @param variables - Optional variables for the query
+ * @returns Typed response data
+ */
+export async function storefrontFetch<T>(
+  query: string,
+  variables?: Record<string, any>
+): Promise<T> {
   if (!SHOPIFY_STORE_DOMAIN) {
     throw new Error("SHOPIFY_STORE_DOMAIN not configured");
   }
@@ -109,7 +117,7 @@ export async function storefrontAPI<T>({
     },
     body: JSON.stringify({
       query,
-      variables,
+      variables: variables || {},
     }),
   });
 
@@ -125,6 +133,17 @@ export async function storefrontAPI<T>({
   }
 
   return json.data as T;
+}
+
+/**
+ * Legacy alias for storefrontFetch (for backward compatibility)
+ * @deprecated Use storefrontFetch instead
+ */
+export async function storefrontAPI<T>({
+  query,
+  variables = {},
+}: StorefrontAPIOptions): Promise<T> {
+  return storefrontFetch<T>(query, variables);
 }
 
 /**
