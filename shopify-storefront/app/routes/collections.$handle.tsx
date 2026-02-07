@@ -69,8 +69,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       });
     }
 
-    const productNodes = data.collection.products.edges.map((edge: any) => edge.node);
-    const products = mapProducts(productNodes);
+    const products = mapProducts(data.collection.products.edges);
 
     return json({
       collection: {

@@ -24,8 +24,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       reverse: true,
     });
 
-    const productNodes = products.edges.map((edge: any) => edge.node);
-    const newProducts = mapProducts(productNodes);
+    const newProducts = mapProducts(products.edges);
 
     return json({ newProducts });
   } catch (error) {

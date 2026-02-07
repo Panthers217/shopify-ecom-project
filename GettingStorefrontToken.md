@@ -1,0 +1,3 @@
+To get there, search for the "Headless" app in the Shopify App Store and install it. Once installed, it will appear under your Sales Channels in the left-hand sidebar of your Shopify Admin.
+
+Inside the channel, just click "Add storefront," and you will immediately see your Public Storefront API access token ready to be copied. You can also click "Manage" right there to check off exactly which data (like products or checkout) the token is allowed to access.
