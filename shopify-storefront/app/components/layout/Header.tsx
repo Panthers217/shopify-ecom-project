@@ -1,7 +1,30 @@
+import { useEffect, useState } from "react";
 import { Link } from "@remix-run/react";
 import NavBar from "./NavBar";
+import { useCart } from "~/hooks/useCart";
 
 export default function Header() {
+  const { totalItems } = useCart();
+  const [cachedTotalItems, setCachedTotalItems] = useState(0);
+
+  // Persist totalItems to localStorage and update cached value
+  useEffect(() => {
+    setCachedTotalItems(totalItems);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cart-total-items", String(totalItems));
+    }
+  }, [totalItems]);
+
+  // Initialize cached value from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("cart-total-items");
+      if (cached) {
+        setCachedTotalItems(Number(cached));
+      }
+    }
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="bg-gray-50 border-b border-gray-200 py-2">
@@ -52,7 +75,9 @@ export default function Header() {
                   <circle cx="16" cy="18" r="1" fill="currentColor"/>
                 </svg>
                 <span>Cart</span>
-                <span className="absolute top-1 right-1 bg-red-600 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">0</span>
+                {(totalItems > 0 || cachedTotalItems > 0) && (
+                  <span className="absolute top-1 right-1 bg-red-600 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">{totalItems || cachedTotalItems}</span>
+                )}
               </Link>
             </div>
           </div>

@@ -10,52 +10,82 @@ interface Variant {
   price: number;
 }
 
-interface SizesProps {
-  variants: Variant[];
+interface ProductOption {
+  name: string;
+  position: number;
+  values: string[];
 }
 
-export default function Sizes({ variants }: SizesProps) {
+interface SizesProps {
+  variants: Variant[];
+  options: ProductOption[];
+  onSizeChange?: (size: string | null) => void;
+}
+
+export default function Sizes({ variants, options, onSizeChange }: SizesProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  // Extract unique sizes from variants
-  const sizes = Array.from(
-    new Set(
-      variants.map((v) => v.option1 || v.title).filter(Boolean)
-    )
+  // Find the size option from product options (look for "Size" option)
+  const sizeOption = options.find(
+    (opt) => opt.name.toLowerCase() === "size"
   );
 
-  if (sizes.length === 0) {
+  if (!sizeOption) {
     return null;
   }
 
-  return (
-    <div className="sizes-selector">
-      <h4>Select Size</h4>
-      <div className="size-options">
-        {sizes.map((size) => {
-          const variant = variants.find(
-            (v) => v.option1 === size || v.title === size
-          );
-          const isAvailable = variant?.available ?? false;
+  // Extract unique sizes from the size option values
+  const sizes = sizeOption.values;
 
-          return (
-            <button
-              key={size}
-              type="button"
-              className={`size-option ${selectedSize === size ? "active" : ""} ${
-                !isAvailable ? "out-of-stock" : ""
-              }`}
-              onClick={() => isAvailable && setSelectedSize(size)}
-              disabled={!isAvailable}
-            >
-              {size}
-            </button>
-          );
-        })}
-      </div>
-      {selectedSize && (
-        <p className="selected-size">Selected: {selectedSize}</p>
-      )}
+  const handleSizeSelect = (size: string | null) => {
+    setSelectedSize(size);
+    onSizeChange?.(size);
+  };
+
+  // Helper to check if a size is available in any variant
+  const isSizeAvailable = (size: string): boolean => {
+    return variants.some((variant) => {
+      const optionIndex = sizeOption.position - 1; // position is 1-based
+      const variantSize = [variant.option1, variant.option2, variant.option3][optionIndex];
+      return variantSize === size && variant.available;
+    });
+  };
+
+  return (
+    <div className="flex gap-2 flex-wrap">
+      {sizes.map((size) => {
+        const isAvailable = isSizeAvailable(size);
+
+        return (
+          // <button
+          //   key={size}
+          //   type="button"
+          //   onClick={() => isAvailable && handleSizeSelect(size)}
+          //   disabled={!isAvailable}
+          //   className={`px-4 py-2 border-2 rounded font-medium text-sm transition-all ${
+          //     selectedSize === size
+          //       ? "border-gray-900 bg-gray-900 text-white"
+          //       : "border-gray-300 bg-white text-gray-900 hover:border-gray-500"
+          //   } ${!isAvailable ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+          // >
+          //   {size}
+          // </button>
+          
+          // demo  pupose, not disabling unavailable sizes to show all options
+           <button
+            key={size}
+            type="button"
+            onClick={() => handleSizeSelect(size)}
+            className={`px-4 py-2 border-2 rounded font-medium text-sm transition-all ${
+              selectedSize === size
+                ? "border-gray-900 bg-gray-900 text-white"
+                : "border-gray-300 bg-white text-gray-900 hover:border-gray-500"
+            } ${ "cursor-pointer"}`}
+          >
+            {size}
+          </button>
+        );
+      })}
     </div>
   );
 }

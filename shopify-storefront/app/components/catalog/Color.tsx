@@ -10,55 +10,96 @@ interface Variant {
   price: number;
 }
 
-interface ColorProps {
-  variants: Variant[];
+interface ProductOption {
+  name: string;
+  position: number;
+  values: string[];
 }
 
-export default function Color({ variants }: ColorProps) {
+interface ColorProps {
+  variants: Variant[];
+  options: ProductOption[];
+  onColorChange?: (color: string | null) => void;
+}
+
+export default function Color({ variants, options, onColorChange }: ColorProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-  // Extract unique colors from variants (assuming color is option2 or in title)
-  const colors = Array.from(
-    new Set(
-      variants.map((v) => v.option2 || v.title).filter(Boolean)
-    )
+  // Find the color option from product options (look for "Color" or "Colour" option)
+  const colorOption = options.find(
+    (opt) => opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "colour"
   );
 
-  if (colors.length === 0) {
+  if (!colorOption) {
     return null;
   }
 
-  return (
-    <div className="color-selector">
-      <h4>Select Color</h4>
-      <div className="color-options">
-        {colors.map((color) => {
-          const variant = variants.find(
-            (v) => v.option2 === color || v.title === color
-          );
-          const isAvailable = variant?.available ?? false;
+  // Extract unique colors from the color option values
+  const colors = colorOption.values;
 
-          return (
-            <button
-              key={color}
-              type="button"
-              className={`color-option ${selectedColor === color ? "active" : ""} ${
-                !isAvailable ? "out-of-stock" : ""
-              }`}
-              onClick={() => isAvailable && setSelectedColor(color)}
-              disabled={!isAvailable}
-              title={color}
-            >
-              <span className="color-swatch" style={{ backgroundColor: color.toLowerCase() }}>
-                {color}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      {selectedColor && (
-        <p className="selected-color">Selected: {selectedColor}</p>
-      )}
+  const handleColorSelect = (color: string | null) => {
+    setSelectedColor(color);
+    onColorChange?.(color);
+  };
+
+  // Helper to check if a color is available in any variant
+  const isColorAvailable = (color: string): boolean => {
+    return variants.some((variant) => {
+      const optionIndex = colorOption.position - 1; // position is 1-based
+      const variantColor = [variant.option1, variant.option2, variant.option3][optionIndex];
+      return variantColor === color && variant.available;
+    });
+  };
+
+  // Color mapping for display
+  const colorMap: { [key: string]: string } = {
+    "light blue": "#ADD8E6",
+    "light-blue": "#ADD8E6",
+    "pink": "#FFC0CB",
+    "lightblue": "#ADD8E6",
+    "blue": "#0000FF",
+    "white": "#FFFFFF",
+    "black": "#000000",
+  };
+
+  return (
+    <div className="flex gap-3">
+      {colors.map((color) => {
+        const isAvailable = isColorAvailable(color);
+        const colorKey = String(color).toLowerCase();
+        const bgColor = colorMap[colorKey] || color;
+
+        return (
+          // <button
+          //   key={color}
+          //   type="button"
+          //   onClick={() =>  handleColorSelect(color)}
+          //   // disabled={!isAvailable}
+          //   title={color}
+          //   className={`w-8 h-8 rounded-full border-2 transition-all ${
+          //     selectedColor === color
+          //       ? "border-gray-900"
+          //       : "border-gray-300 hover:border-gray-500"
+          //   } ${!isAvailable ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+          //   style={{ backgroundColor: bgColor }}
+          // />
+          
+          // demo  pupose, not disabling unavailable colors to show all options
+           <button
+            key={color}
+            type="button"
+            onClick={() =>  handleColorSelect(color)}
+            // disabled={!isAvailable}
+            title={color}
+            className={`w-8 h-8 rounded-full border-2 transition-all ${
+              selectedColor === color
+                ? "border-gray-900"
+                : "border-gray-300 hover:border-gray-500"
+            } ${ "cursor-pointer"}`}
+            style={{ backgroundColor: bgColor }}
+          />
+        );
+      })}
     </div>
   );
 }
