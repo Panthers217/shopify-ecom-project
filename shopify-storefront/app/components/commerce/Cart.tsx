@@ -1,11 +1,101 @@
 "use client";
 
+import { memo, useEffect, useState } from "react";
 import { useCart } from "~/hooks/useCart";
+import type { CartItem } from "~/hooks/useCart";
+
+// Memoized cart line item - only re-renders when its own data changes
+const CartLineItem = memo(function CartLineItem({
+  item,
+  loading,
+  onUpdateQuantity,
+  onRemove,
+}: {
+  item: CartItem;
+  loading: boolean;
+  onUpdateQuantity: (lineId: string, quantity: number) => Promise<boolean>;
+  onRemove: (lineId: string) => Promise<boolean>;
+}) {
+  return (
+    <div className="flex gap-4 border-b border-gray-200 pb-4">
+      {/* Product Image */}
+      <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+        {item.image && (
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover"
+          />
+        )}
+      </div>
+
+      {/* Product Details */}
+      <div className="flex-1 flex flex-col justify-between">
+        <div>
+          <a
+            href={`/products/${item.handle}`}
+            className="text-lg font-semibold text-gray-900 hover:text-pink-600"
+          >
+            {item.title}
+          </a>
+          <p className="text-sm font-semibold text-gray-900 mt-2">
+            ${item.price.toFixed(2)}
+          </p>
+        </div>
+
+        {/* Quantity and Remove */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 border border-gray-300 rounded">
+            <button
+              onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+              disabled={item.quantity <= 1 || loading}
+              className="px-3 py-1 hover:bg-gray-100 disabled:text-gray-300"
+            >
+              −
+            </button>
+            <span className="px-4">{item.quantity}</span>
+            <button
+              onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+              disabled={loading}
+              className="px-3 py-1 hover:bg-gray-100 disabled:text-gray-300"
+            >
+              +
+            </button>
+          </div>
+
+          <button
+            onClick={() => onRemove(item.id)}
+            disabled={loading}
+            className="text-sm text-red-600 hover:text-red-700 disabled:text-gray-300"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+
+      {/* Line Total */}
+      <div className="text-right">
+        <p className="font-semibold text-gray-900">
+          ${(item.price * item.quantity).toFixed(2)}
+        </p>
+      </div>
+    </div>
+  );
+});
 
 export default function Cart() {
   const { cart, loading, removeFromCart, updateQuantity } = useCart();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  if (loading) {
+  // Track when cart has loaded at least once
+  useEffect(() => {
+    if (cart !== null) {
+      setIsInitialLoad(false);
+    }
+  }, [cart]);
+
+  // Only show full loading screen on initial load
+  if (isInitialLoad && loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
@@ -15,7 +105,7 @@ export default function Cart() {
     );
   }
 
-  if (!cart || cart.lines.length === 0) {
+  if (!cart || cart.items.length === 0) {
     return (
       <div className="min-h-screen bg-white p-6">
         <div className="max-w-4xl mx-auto text-center py-12">
@@ -32,9 +122,7 @@ export default function Cart() {
     );
   }
 
-  const subtotal = parseFloat(cart.estimatedCost.subtotalAmount?.amount || "0");
-  const tax = parseFloat(cart.estimatedCost.totalTaxAmount?.amount || "0");
-  const total = parseFloat(cart.estimatedCost.totalAmount.amount);
+  const total = cart.totalPrice;
 
   return (
     <div className="min-h-screen bg-white">
@@ -45,71 +133,14 @@ export default function Cart() {
           {/* Cart Items */}
           <div className="lg:col-span-2">
             <div className="space-y-4">
-              {cart.lines.map((line) => (
-                <div key={line.id} className="flex gap-4 border-b border-gray-200 pb-4">
-                  {/* Product Image */}
-                  <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-                    <img
-                      src={line.merchandise.image.url}
-                      alt={line.merchandise.image.altText || line.merchandise.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  {/* Product Details */}
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div>
-                      <a
-                        href={`/products/${line.merchandise.product.handle}`}
-                        className="text-lg font-semibold text-gray-900 hover:text-pink-600"
-                      >
-                        {line.merchandise.product.title}
-                      </a>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {line.merchandise.title}
-                      </p>
-                      <p className="text-sm font-semibold text-gray-900 mt-2">
-                        ${parseFloat(line.merchandise.priceV2.amount).toFixed(2)}
-                      </p>
-                    </div>
-
-                    {/* Quantity and Remove */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 border border-gray-300 rounded">
-                        <button
-                          onClick={() => updateQuantity(line.id, line.quantity - 1)}
-                          disabled={line.quantity <= 1 || loading}
-                          className="px-3 py-1 hover:bg-gray-100 disabled:text-gray-300"
-                        >
-                          −
-                        </button>
-                        <span className="px-4">{line.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(line.id, line.quantity + 1)}
-                          disabled={loading}
-                          className="px-3 py-1 hover:bg-gray-100 disabled:text-gray-300"
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <button
-                        onClick={() => removeFromCart(line.id)}
-                        disabled={loading}
-                        className="text-sm text-red-600 hover:text-red-700 disabled:text-gray-300"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Line Total */}
-                  <div className="text-right">
-                    <p className="font-semibold text-gray-900">
-                      ${(parseFloat(line.merchandise.priceV2.amount) * line.quantity).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
+              {cart.items.map((item) => (
+                <CartLineItem
+                  key={item.id}
+                  item={item}
+                  loading={loading}
+                  onUpdateQuantity={updateQuantity}
+                  onRemove={removeFromCart}
+                />
               ))}
             </div>
           </div>
@@ -122,11 +153,7 @@ export default function Cart() {
               <div className="space-y-3 mb-6 border-b border-gray-200 pb-6">
                 <div className="flex justify-between text-gray-700">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-gray-700">
-                  <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-gray-700">
                   <span>Shipping</span>
@@ -141,14 +168,12 @@ export default function Cart() {
                 </span>
               </div>
 
-              <a
-                href={cart.checkoutUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => alert('Checkout functionality will be implemented')}
                 className="w-full block text-center bg-pink-100 hover:bg-pink-200 text-gray-900 font-semibold py-3 px-4 rounded transition-colors mb-3"
               >
                 Proceed to Checkout
-              </a>
+              </button>
 
               <a
                 href="/products"
