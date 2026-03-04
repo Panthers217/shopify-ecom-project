@@ -11,6 +11,7 @@ import type { LinksFunction } from "@remix-run/node";
 import styles from "~/styles/app.css?url";
 import Header from "~/components/layout/Header";
 import Footer from "~/components/layout/Footer";
+import { CartProvider } from "~/contexts/CartContext";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
@@ -37,11 +38,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1 py-10">{children}</main>
-          <Footer />
-        </div>
+        <CartProvider>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1 py-10">{children}</main>
+            <Footer />
+          </div>
+        </CartProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
