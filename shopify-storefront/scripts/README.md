@@ -11,7 +11,44 @@ SHOPIFY_CLIENT_ID=your_client_id
 SHOPIFY_CLIENT_SECRET=your_client_secret
 ```
 
-## Step 1: Create Collections
+## 🚀 Quick Start (Recommended)
+
+### Import Everything with GraphQL Mutations
+
+Run this single script to create all collections and products using Shopify Admin GraphQL API:
+
+```bash
+cd /workspaces/shopify-ecom-project/shopify-storefront
+npx tsx scripts/importMockData.ts
+```
+
+This will:
+- ✅ Check for existing collections and products (skips duplicates)
+- ✅ Create 9 collections (Apparel, Accessories, Jewelry, Shoes, etc.)
+- ✅ Create 8 products with variants (24 total variants)
+- ✅ Automatically link products to collections
+- ✅ Set up inventory quantities
+- ✅ Configure prices and compare-at prices
+- ✅ Process in batches with rate limiting protection
+
+**Benefits:**
+- ✨ **Smart duplicate detection** - Won't create items that already exist
+- ⚡ **Rate limit protection** - Batching prevents API throttling
+- 🔄 **Idempotent** - Safe to run multiple times
+- 🛡️ **Error handling** - Continues on failure, reports issues
+- 📊 **Detailed logging** - See exactly what's happening
+
+**Rate Limiting Configuration:**
+- Batch Size: 5 items per batch
+- Batch Delay: 2 seconds between batches
+- Operation Delay: 500ms between operations
+- Shopify Admin API limits respected
+
+---
+
+## 📝 Alternative Methods
+
+### Method 1: Create Collections Only (REST API)
 
 Run this script to automatically create all 9 collections:
 
@@ -31,7 +68,7 @@ This will create:
 - Kids
 - Bestseller
 
-## Step 2: Import Products
+### Method 2: Import Products via CSV
 
 ### Option A: Using Shopify Admin (Recommended)
 

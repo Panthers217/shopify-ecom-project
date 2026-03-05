@@ -11,6 +11,7 @@ import type { LinksFunction } from "@remix-run/node";
 import styles from "~/styles/app.css?url";
 import Header from "~/components/layout/Header";
 import Footer from "~/components/layout/Footer";
+import SearchBar from "~/components/commerce/SearchBar";
 import { CartProvider } from "~/contexts/CartContext";
 
 export const links: LinksFunction = () => [
@@ -41,6 +42,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <CartProvider>
           <div className="min-h-screen flex flex-col">
             <Header />
+            <div className="border-b border-gray-200 bg-gray-50">
+              <div className="max-w-7xl mx-auto px-6 py-4">
+                <SearchBar />
+              </div>
+            </div>
             <main className="flex-1 py-10">{children}</main>
             <Footer />
           </div>

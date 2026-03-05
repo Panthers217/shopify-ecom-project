@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import Cards from "~/components/catalog/Cards";
 import Filter from "~/components/catalog/Filter";
+import type { MappedProduct } from "~/lib/productMapper";
 
 export const meta: MetaFunction = () => {
   return [
@@ -22,7 +23,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   };
 
   // TODO: Search products from Shopify Storefront API
-  const products = [];
+  const products: MappedProduct[] = [];
   
   return json({ products, searchQuery, filters });
 }
