@@ -6,13 +6,18 @@ import {
   ScrollRestoration,
   useRouteError,
   isRouteErrorResponse,
+  useLoaderData,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import styles from "~/styles/app.css?url";
 import Header from "~/components/layout/Header";
 import Footer from "~/components/layout/Footer";
 import SearchBar from "~/components/commerce/SearchBar";
 import { CartProvider } from "~/contexts/CartContext";
+import { getUserSession } from "~/lib/session.server";
+import { storefrontFetch } from "~/lib/shopifyStorefront.server";
+import { GET_CUSTOMER_QUERY } from "~/lib/queries";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
@@ -28,6 +33,35 @@ export const links: LinksFunction = () => [
   },
 ];
 
+interface Customer {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const customerAccessToken = await getUserSession(request);
+  
+  let customer: Customer | null = null;
+  
+  if (customerAccessToken) {
+    try {
+      const response = await storefrontFetch<{
+        customer: Customer;
+      }>(GET_CUSTOMER_QUERY, {
+        customerAccessToken,
+      });
+      customer = response.customer;
+    } catch (error) {
+      console.error("Error fetching customer in root loader:", error);
+      // Don't throw, just continue without customer data
+    }
+  }
+  
+  return json({ customer });
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -39,18 +73,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <CartProvider>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <div className="border-b border-gray-200 bg-gray-50">
-              <div className="max-w-7xl mx-auto px-6 py-4">
-                <SearchBar />
-              </div>
-            </div>
-            <main className="flex-1 py-10">{children}</main>
-            <Footer />
-          </div>
-        </CartProvider>
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -93,5 +116,22 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { customer } = useLoaderData<typeof loader>();
+  
+  return (
+    <CartProvider>
+      <div className="min-h-screen flex flex-col">
+        <Header customer={customer} />
+        <div className="border-b border-gray-200 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6 py-4">
+            <SearchBar />
+          </div>
+        </div>
+        <main className="flex-1 py-10">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </CartProvider>
+  );
 }

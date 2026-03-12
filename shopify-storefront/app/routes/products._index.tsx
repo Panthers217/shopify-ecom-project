@@ -29,8 +29,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       query: searchQuery || null,
     });
 
-    const productNodes = products.edges.map((edge: any) => edge.node);
-    const mappedProducts = mapProducts(productNodes);
+    const mappedProducts = mapProducts(products.edges);
 
     return json({ products: mappedProducts, searchQuery });
   } catch (error) {

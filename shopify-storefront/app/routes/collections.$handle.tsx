@@ -135,7 +135,7 @@ export default function CollectionPage() {
       </div>
 
       {products.length > 0 ? (
-        <Cards products={products} />
+        <Cards products={products.filter((p): p is NonNullable<typeof p> => p !== null)} />
       ) : (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">No products found in this collection.</p>

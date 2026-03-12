@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import Hero from "~/components/sections/Hero";
 import NewMerch from "~/components/catalog/NewMerch";
 import { storefrontFetch } from "~/lib/shopifyStorefront.server";
 import { GET_PRODUCTS_QUERY } from "~/lib/queries";
@@ -38,6 +39,7 @@ export default function Index() {
 
   return (
     <div>
+      <Hero featuredProducts={newProducts.slice(0, 4)} />
       <NewMerch
         products={newProducts}
         title="New Arrivals"

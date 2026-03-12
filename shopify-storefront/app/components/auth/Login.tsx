@@ -10,14 +10,18 @@ interface LoginProps {
 
 export default function Login({ errors }: LoginProps) {
   return (
-    <div className="login-form">
-      <Form method="post" className="auth-form">
+    <div className="bg-white rounded-2xl shadow-xl p-8">
+      <Form method="post" className="space-y-6">
         {errors?.general && (
-          <div className="error-message">{errors.general}</div>
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {errors.general}
+          </div>
         )}
 
-        <div className="form-field">
-          <label htmlFor="email">Email</label>
+        <div className="space-y-2">
+          <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+            Email Address
+          </label>
           <input
             type="email"
             id="email"
@@ -25,14 +29,17 @@ export default function Login({ errors }: LoginProps) {
             required
             placeholder="your@email.com"
             autoComplete="email"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
           />
           {errors?.email && (
-            <span className="field-error">{errors.email}</span>
+            <span className="text-red-500 text-sm mt-1 block">{errors.email}</span>
           )}
         </div>
 
-        <div className="form-field">
-          <label htmlFor="password">Password</label>
+        <div className="space-y-2">
+          <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+            Password
+          </label>
           <input
             type="password"
             id="password"
@@ -40,24 +47,32 @@ export default function Login({ errors }: LoginProps) {
             required
             placeholder="••••••••"
             autoComplete="current-password"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
           />
           {errors?.password && (
-            <span className="field-error">{errors.password}</span>
+            <span className="text-red-500 text-sm mt-1 block">{errors.password}</span>
           )}
         </div>
 
-        <button type="submit" className="submit-btn">
-          Login
+        <button 
+          type="submit" 
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-200"
+        >
+          Sign In
         </button>
 
-        <div className="form-footer">
-          <p>
+        <div className="space-y-3 pt-4 border-t border-gray-200">
+          <p className="text-center text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link to="/account/signup">Sign up</Link>
+            <Link to="/account/signup" className="text-indigo-600 hover:text-indigo-700 font-semibold">
+              Sign up
+            </Link>
           </p>
-          <Link to="/account/reset" className="forgot-password">
-            Forgot password?
-          </Link>
+          <div className="text-center">
+            <Link to="/account/reset" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+              Forgot password?
+            </Link>
+          </div>
         </div>
       </Form>
     </div>

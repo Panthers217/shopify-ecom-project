@@ -12,15 +12,19 @@ interface SignupProps {
 
 export default function Signup({ errors }: SignupProps) {
   return (
-    <div className="signup-form">
-      <Form method="post" className="auth-form">
+    <div className="bg-white rounded-2xl shadow-xl p-8">
+      <Form method="post" className="space-y-6">
         {errors?.general && (
-          <div className="error-message">{errors.general}</div>
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {errors.general}
+          </div>
         )}
 
-        <div className="form-row">
-          <div className="form-field">
-            <label htmlFor="firstName">First Name</label>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700">
+              First Name
+            </label>
             <input
               type="text"
               id="firstName"
@@ -28,14 +32,17 @@ export default function Signup({ errors }: SignupProps) {
               required
               placeholder="John"
               autoComplete="given-name"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
             />
             {errors?.firstName && (
-              <span className="field-error">{errors.firstName}</span>
+              <span className="text-red-500 text-sm mt-1 block">{errors.firstName}</span>
             )}
           </div>
 
-          <div className="form-field">
-            <label htmlFor="lastName">Last Name</label>
+          <div className="space-y-2">
+            <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700">
+              Last Name
+            </label>
             <input
               type="text"
               id="lastName"
@@ -43,15 +50,18 @@ export default function Signup({ errors }: SignupProps) {
               required
               placeholder="Doe"
               autoComplete="family-name"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
             />
             {errors?.lastName && (
-              <span className="field-error">{errors.lastName}</span>
+              <span className="text-red-500 text-sm mt-1 block">{errors.lastName}</span>
             )}
           </div>
         </div>
 
-        <div className="form-field">
-          <label htmlFor="email">Email</label>
+        <div className="space-y-2">
+          <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+            Email Address
+          </label>
           <input
             type="email"
             id="email"
@@ -59,14 +69,17 @@ export default function Signup({ errors }: SignupProps) {
             required
             placeholder="your@email.com"
             autoComplete="email"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
           />
           {errors?.email && (
-            <span className="field-error">{errors.email}</span>
+            <span className="text-red-500 text-sm mt-1 block">{errors.email}</span>
           )}
         </div>
 
-        <div className="form-field">
-          <label htmlFor="password">Password</label>
+        <div className="space-y-2">
+          <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+            Password
+          </label>
           <input
             type="password"
             id="password"
@@ -75,21 +88,27 @@ export default function Signup({ errors }: SignupProps) {
             placeholder="••••••••"
             autoComplete="new-password"
             minLength={8}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
           />
           {errors?.password && (
-            <span className="field-error">{errors.password}</span>
+            <span className="text-red-500 text-sm mt-1 block">{errors.password}</span>
           )}
-          <small>Password must be at least 8 characters</small>
+          <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters</p>
         </div>
 
-        <button type="submit" className="submit-btn">
+        <button 
+          type="submit" 
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-200"
+        >
           Create Account
         </button>
 
-        <div className="form-footer">
-          <p>
+        <div className="pt-4 border-t border-gray-200">
+          <p className="text-center text-sm text-gray-600">
             Already have an account?{" "}
-            <Link to="/account/login">Login</Link>
+            <Link to="/account/login" className="text-indigo-600 hover:text-indigo-700 font-semibold">
+              Sign in
+            </Link>
           </p>
         </div>
       </Form>

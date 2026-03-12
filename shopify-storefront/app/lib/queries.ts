@@ -542,3 +542,91 @@ export const GET_CART_QUERY = `
     }
   }
 `;
+
+// ============================================================================
+// CUSTOMER AUTHENTICATION MUTATIONS
+// ============================================================================
+
+/**
+ * Customer Login Mutation
+ * Authenticates customer and returns access token
+ */
+export const CUSTOMER_LOGIN_MUTATION = `
+  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+    customerAccessTokenCreate(input: $input) {
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+/**
+ * Customer Signup Mutation
+ * Creates a new customer account
+ */
+export const CUSTOMER_CREATE_MUTATION = `
+  mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+        email
+        firstName
+        lastName
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+/**
+ * Customer Logout Mutation
+ * Deletes the customer access token
+ */
+export const CUSTOMER_LOGOUT_MUTATION = `
+  mutation customerAccessTokenDelete($customerAccessToken: String!) {
+    customerAccessTokenDelete(customerAccessToken: $customerAccessToken) {
+      deletedAccessToken
+      deletedCustomerAccessTokenId
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+/**
+ * Get Customer Query
+ * Fetches customer details using access token
+ */
+export const GET_CUSTOMER_QUERY = `
+  query getCustomer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id
+      email
+      firstName
+      lastName
+      phone
+      defaultAddress {
+        id
+        address1
+        address2
+        city
+        province
+        country
+        zip
+      }
+    }
+  }
+`;

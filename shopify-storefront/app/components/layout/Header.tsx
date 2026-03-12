@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "@remix-run/react";
+import { Link, Form } from "@remix-run/react";
 import NavBar from "./NavBar";
 import { useCart } from "~/hooks/useCart";
 
-export default function Header() {
+interface Customer {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+}
+
+interface HeaderProps {
+  customer?: Customer | null;
+}
+
+export default function Header({ customer }: HeaderProps) {
   const { cart, totalPrice, } = useCart();
   const [cachedTotalPrice, setCachedTotalPrice] = useState(0);
 
@@ -38,13 +49,36 @@ export default function Header() {
               <span className="text-gray-600 font-medium">Free shipping on orders over $50</span>
             </div>
             <div className="flex gap-2 items-center">
-              <Link to="/account/login" className="text-gray-600 font-medium px-2 py-1 rounded hover:text-primary hover:bg-blue-50 transition">
-                Login
-              </Link>
-              <span className="text-gray-300">|</span>
-              <Link to="/account/signup" className="text-gray-600 font-medium px-2 py-1 rounded hover:text-primary hover:bg-blue-50 transition">
-                Sign Up
-              </Link>
+              {customer ? (
+                <>
+                  <Link 
+                    to="/account" 
+                    className="text-gray-600 font-medium px-3 py-1 rounded hover:text-primary hover:bg-blue-50 transition flex items-center gap-2"
+                  >
+                    <span className="text-lg">👤</span>
+                    <span>Hi, {customer.firstName || "Customer"}</span>
+                  </Link>
+                  <span className="text-gray-300">|</span>
+                  <Form method="post" action="/account/logout" className="inline">
+                    <button
+                      type="submit"
+                      className="text-gray-600 font-medium px-3 py-1 rounded hover:text-red-600 hover:bg-red-50 transition"
+                    >
+                      Sign Out
+                    </button>
+                  </Form>
+                </>
+              ) : (
+                <>
+                  <Link to="/account/login" className="text-gray-600 font-medium px-2 py-1 rounded hover:text-primary hover:bg-blue-50 transition">
+                    Login
+                  </Link>
+                  <span className="text-gray-300">|</span>
+                  <Link to="/account/signup" className="text-gray-600 font-medium px-2 py-1 rounded hover:text-primary hover:bg-blue-50 transition">
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
