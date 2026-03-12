@@ -34,18 +34,18 @@ export default function Footer() {
               <li><Link to="/search" className="text-sm hover:text-white transition">Search</Link></li>
               <li><Link to="/cart" className="text-sm hover:text-white transition">Shopping Cart</Link></li>
               <li><Link to="/account/login" className="text-sm hover:text-white transition">My Account</Link></li>
-              <li><a href="#" className="text-sm hover:text-white transition">Contact Us</a></li>
-              <li><a href="#" className="text-sm hover:text-white transition">Shipping & Returns</a></li>
+              <li><Link to="/pages/contact" className="text-sm hover:text-white transition">Contact Us</Link></li>
+              <li><Link to="/pages/shipping-returns" className="text-sm hover:text-white transition">Shipping & Returns</Link></li>
             </ul>
           </div>
 
           <div className="flex flex-col gap-4">
             <h3 className="text-base font-semibold text-gray-100 uppercase tracking-wide">About Us</h3>
             <ul className="flex flex-col gap-2.5">
-              <li><a href="#" className="text-sm hover:text-white transition">Our Story</a></li>
-              <li><a href="#" className="text-sm hover:text-white transition">Careers</a></li>
-              <li><a href="#" className="text-sm hover:text-white transition">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm hover:text-white transition">Terms of Service</a></li>
+              <li><Link to="/pages/about" className="text-sm hover:text-white transition">Our Story</Link></li>
+              <li><Link to="/pages/careers" className="text-sm hover:text-white transition">Careers</Link></li>
+              <li><Link to="/pages/privacy-policy" className="text-sm hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link to="/pages/terms-of-service" className="text-sm hover:text-white transition">Terms of Service</Link></li>
             </ul>
           </div>
 

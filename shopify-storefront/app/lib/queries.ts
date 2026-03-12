@@ -630,3 +630,44 @@ export const GET_CUSTOMER_QUERY = `
     }
   }
 `;
+
+// ============================================================================
+// PAGE QUERIES
+// ============================================================================
+
+/**
+ * Get Page by Handle Query
+ * Fetches static page content from Shopify (About, Contact, etc.)
+ */
+export const GET_PAGE_BY_HANDLE_QUERY = `
+  query getPageByHandle($handle: String!) {
+    page(handle: $handle) {
+      id
+      title
+      body
+      bodySummary
+      handle
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+/**
+ * Get All Pages Query
+ * Fetches list of all pages
+ */
+export const GET_PAGES_QUERY = `
+  query getPages($first: Int!) {
+    pages(first: $first) {
+      edges {
+        node {
+          id
+          title
+          handle
+          bodySummary
+        }
+      }
+    }
+  }
+`;
