@@ -7,9 +7,11 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "start": "remix-serve ./build/server/index.js",
+    "start:netlify": "netlify dev",
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@netlify/remix-adapter": "^3.0.0",
     "@remix-run/node": "^2.5.1",
     "@remix-run/react": "^2.5.1",
     "@remix-run/serve": "^2.5.1",
