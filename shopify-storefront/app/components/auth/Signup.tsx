@@ -12,7 +12,7 @@ interface SignupProps {
 
 export default function Signup({ errors }: SignupProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8">
+    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
       <Form method="post" className="space-y-6">
         {errors?.general && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -20,7 +20,7 @@ export default function Signup({ errors }: SignupProps) {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700">
               First Name

@@ -134,11 +134,11 @@ export default function CardOverview({ product, className = "" }: CardOverviewPr
 
   return (
     <div className={`bg-white ${className}`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+      <div className="grid grid-cols-1 gap-6 p-4 sm:p-6 md:grid-cols-2 md:gap-8">
         {/* Left: Product Gallery */}
         <div className="flex flex-col gap-4">
           {mainImage && (
-            <div className="w-full h-96 md:h-full rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+            <div className="flex h-72 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100 sm:h-96 md:h-full">
               <img
                 src={mainImage.src}
                   alt={mainImage.alt || activeImageAlt || product.title}
@@ -149,11 +149,11 @@ export default function CardOverview({ product, className = "" }: CardOverviewPr
           
           {/* Thumbnail Gallery */}
           {images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto">
+            <div className="flex gap-2 overflow-x-auto pb-1">
               {images.map((image, index) => (
                 <button
                   key={index}
-                  className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 border-2 transition-colors ${
+                  className={`h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg border-2 bg-gray-100 transition-colors sm:h-16 sm:w-16 ${
                     activeImageSrc === image.src
                       ? "border-gray-800"
                       : "border-transparent hover:border-gray-300"
@@ -179,7 +179,7 @@ export default function CardOverview({ product, className = "" }: CardOverviewPr
         <div className="flex flex-col gap-6">
           {/* Title and Rating */}
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">
               {product.title}
             </h1>
             
@@ -199,7 +199,7 @@ export default function CardOverview({ product, className = "" }: CardOverviewPr
           </div>
 
           {/* Price */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <span className="text-2xl font-bold text-gray-900">
               ${(displayPrice / 100).toFixed(2)}
             </span>
@@ -274,11 +274,11 @@ export default function CardOverview({ product, className = "" }: CardOverviewPr
           )}
 
           {/* Wishlist and Share */}
-          <div className="flex gap-4 text-sm">
-            <button type="button" className="flex-1 border border-gray-300 py-2 px-4 rounded hover:bg-gray-50">
+          <div className="flex flex-col gap-3 text-sm sm:flex-row sm:gap-4">
+            <button type="button" className="flex-1 rounded border border-gray-300 px-4 py-2 hover:bg-gray-50">
               🤍 + Wishlist
             </button>
-            <button type="button" className="flex-1 border border-gray-300 py-2 px-4 rounded hover:bg-gray-50">
+            <button type="button" className="flex-1 rounded border border-gray-300 px-4 py-2 hover:bg-gray-50">
               Share
             </button>
           </div>

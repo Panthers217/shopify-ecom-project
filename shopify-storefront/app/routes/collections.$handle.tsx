@@ -115,11 +115,11 @@ export default function CollectionPage() {
   const error = 'error' in data && data.error;
 
   return (
-    <div className="max-w-7xl mx-auto px-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">{collection.title}</h1>
+        <h1 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl">{collection.title}</h1>
         {collection.description && (
-          <p className="text-lg text-gray-600 max-w-3xl">{collection.description}</p>
+          <p className="max-w-3xl text-base text-gray-600 sm:text-lg">{collection.description}</p>
         )}
         {(notFound || error) && (
           <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">

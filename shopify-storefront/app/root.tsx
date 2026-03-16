@@ -127,11 +127,11 @@ export default function App() {
       <div className="min-h-screen flex flex-col">
         <Header customer={customer} />
         <div className="border-b border-gray-200 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6">
             <SearchBar />
           </div>
         </div>
-        <main className="flex-1 py-10">
+        <main className="flex-1 py-6 sm:py-10">
           <Outlet />
         </main>
         <Footer />

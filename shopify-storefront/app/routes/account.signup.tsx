@@ -164,10 +164,10 @@ export default function SignupPage() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <div className="max-w-lg w-full space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Create Account</h1>
+          <h1 className="mb-2 text-3xl font-bold text-gray-900 sm:text-4xl">Create Account</h1>
           <p className="text-gray-600">Join us and start shopping today</p>
         </div>
         <Signup errors={actionData?.errors} />

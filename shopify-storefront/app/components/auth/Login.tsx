@@ -10,7 +10,7 @@ interface LoginProps {
 
 export default function Login({ errors }: LoginProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8">
+    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
       <Form method="post" className="space-y-6">
         {errors?.general && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">

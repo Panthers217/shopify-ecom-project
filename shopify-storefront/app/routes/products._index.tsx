@@ -43,9 +43,9 @@ export default function ProductsIndex() {
   const [searchParams] = useSearchParams();
 
   return (
-    <div className="max-w-7xl mx-auto px-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">All Products</h1>
+        <h1 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl">All Products</h1>
         {searchQuery && (
           <p className="text-gray-600">
             Showing results for: <span className="font-semibold">{searchQuery}</span>
@@ -54,8 +54,8 @@ export default function ProductsIndex() {
         <p className="text-gray-600">{products.length} products</p>
       </div>
 
-      <div className="flex gap-8">
-        <aside className="w-64 flex-shrink-0">
+      <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+        <aside className="w-full flex-shrink-0 lg:w-64">
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <h3 className="font-semibold text-gray-900 mb-4">Sort By</h3>
             <select
@@ -75,7 +75,7 @@ export default function ProductsIndex() {
           </div>
         </aside>
 
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <Cards products={products} />
         </div>
       </div>

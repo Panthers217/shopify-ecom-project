@@ -27,17 +27,17 @@ export default function Hero({ featuredProducts = [] }: HeroProps) {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-200 rounded-full opacity-20 blur-3xl"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
           {/* Left side - Text content */}
           <div className="text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="mb-6 text-3xl font-bold leading-tight text-gray-900 sm:text-5xl lg:text-6xl">
               Welcome to{" "}
               <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 Evergreen Apparel Co
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-gray-700 mb-8 max-w-2xl mx-auto lg:mx-0">
+            <p className="mb-8 max-w-2xl mx-auto text-base text-gray-700 sm:text-xl lg:mx-0">
               Discover timeless style and quality craftsmanship. From everyday essentials to statement pieces, 
               find everything you need to express your unique style.
             </p>
@@ -59,14 +59,14 @@ export default function Hero({ featuredProducts = [] }: HeroProps) {
 
           {/* Right side - Product showcase */}
           <div className="relative">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {featuredProducts.length > 0 ? (
                 featuredProducts.slice(0, 4).map((product, index) => (
                   <a
                     key={product.id}
                     href={`/products/${product.handle}`}
                     className={`group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 ${
-                      index === 0 ? 'col-span-2 h-64' : 'h-48'
+                      index === 0 ? 'col-span-2 h-52 sm:h-64' : 'h-40 sm:h-48'
                     }`}
                   >
                     <img
@@ -90,7 +90,7 @@ export default function Hero({ featuredProducts = [] }: HeroProps) {
                   <div
                     key={index}
                     className={`relative overflow-hidden rounded-2xl shadow-lg ${
-                      index === 0 ? 'col-span-2 h-64' : 'h-48'
+                      index === 0 ? 'col-span-2 h-52 sm:h-64' : 'h-40 sm:h-48'
                     }`}
                   >
                     <img
@@ -103,14 +103,14 @@ export default function Hero({ featuredProducts = [] }: HeroProps) {
               )}
             </div>
             {/* Decorative badge */}
-            <div className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold px-6 py-2 rounded-full shadow-lg transform rotate-12">
+            <div className="absolute right-2 top-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 px-4 py-2 text-sm font-bold text-white shadow-lg sm:-right-4 sm:-top-4 sm:px-6 sm:text-base sm:rotate-12">
               New Arrivals
             </div>
           </div>
         </div>
 
         {/* Feature highlights */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-12 grid grid-cols-1 gap-6 md:mt-20 md:grid-cols-3">
           <div className="bg-white/60 backdrop-blur-sm p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
             <div className="text-3xl mb-3">🚚</div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Free Shipping</h3>

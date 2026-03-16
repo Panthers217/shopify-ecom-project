@@ -12,7 +12,12 @@ interface MenuItem {
   }>;
 }
 
-export default function NavBar() {
+interface NavBarProps {
+  mobileOpen?: boolean;
+  onNavigate?: () => void;
+}
+
+export default function NavBar({ mobileOpen = false, onNavigate }: NavBarProps) {
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
 
   const menuItems: MenuItem[] = [
@@ -109,27 +114,47 @@ export default function NavBar() {
   ];
 
   return (
-    <nav className="flex-1">
-      <ul className="flex gap-1 items-center">
-        {menuItems.map((item) => (
-          <li
-            key={item.title}
-            className="relative"
-            onMouseEnter={() => setHoveredMenu(item.title)}
-            onMouseLeave={() => setHoveredMenu(null)}
-          >
-            <Link to={`/collections/${item.handle}`} className="block px-4 py-3 text-gray-600 font-medium text-sm uppercase tracking-wide rounded-md hover:text-primary hover:bg-gray-50 transition">
-              {item.title}
-            </Link>
-            <HoverBannerMenu
-              title={item.title}
-              description={item.description}
-              quickLinks={item.quickLinks}
-              isVisible={hoveredMenu === item.title}
-            />
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <>
+      <nav className="hidden flex-1 md:block">
+        <ul className="flex flex-wrap items-center gap-1">
+          {menuItems.map((item) => (
+            <li
+              key={item.title}
+              className="relative"
+              onMouseEnter={() => setHoveredMenu(item.title)}
+              onMouseLeave={() => setHoveredMenu(null)}
+            >
+              <Link to={`/collections/${item.handle}`} className="block rounded-md px-4 py-3 text-sm font-medium uppercase tracking-wide text-gray-600 transition hover:bg-gray-50 hover:text-primary">
+                {item.title}
+              </Link>
+              <HoverBannerMenu
+                title={item.title}
+                description={item.description}
+                quickLinks={item.quickLinks}
+                isVisible={hoveredMenu === item.title}
+              />
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {mobileOpen && (
+        <nav className="border-t border-gray-200 pt-4 md:hidden">
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {menuItems.map((item) => (
+              <li key={item.title}>
+                <Link
+                  to={`/collections/${item.handle}`}
+                  onClick={onNavigate}
+                  className="block rounded-md border border-gray-200 px-3 py-3 text-center text-sm font-medium uppercase tracking-wide text-gray-700 transition hover:bg-gray-50 hover:text-primary"
+                >
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </>
   );
 }
