@@ -73,6 +73,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        {/* Hidden form so Netlify's build bot registers the "newsletter" form */}
+        <form name="newsletter" data-netlify="true" hidden>
+          <input type="email" name="email" />
+        </form>
         {children}
         <ScrollRestoration />
         <Scripts />
