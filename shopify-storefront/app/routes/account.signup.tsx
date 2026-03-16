@@ -30,6 +30,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const password = formData.get("password");
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
+  const acceptsMarketing = formData.get("acceptsMarketing") === "on";
 
   // Basic validation
   const errors: { 
@@ -75,6 +76,12 @@ export async function action({ request }: ActionFunctionArgs) {
         password,
         firstName,
         lastName,
+        ...(acceptsMarketing && {
+          emailMarketingConsent: {
+            marketingOptInLevel: "SINGLE_OPT_IN",
+            marketingState: "SUBSCRIBED",
+          },
+        }),
       },
     });
 

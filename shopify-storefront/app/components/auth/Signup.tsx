@@ -96,6 +96,18 @@ export default function Signup({ errors }: SignupProps) {
           <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters</p>
         </div>
 
+        <div className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            id="acceptsMarketing"
+            name="acceptsMarketing"
+            className="mt-0.5 w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+          />
+          <label htmlFor="acceptsMarketing" className="text-sm text-gray-600">
+            Subscribe to our newsletter for special offers and updates
+          </label>
+        </div>
+
         <button 
           type="submit" 
           className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-200"

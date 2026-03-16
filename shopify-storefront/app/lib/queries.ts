@@ -579,6 +579,9 @@ export const CUSTOMER_CREATE_MUTATION = `
         email
         firstName
         lastName
+        emailMarketingConsent {
+          marketingState
+        }
       }
       customerUserErrors {
         code
