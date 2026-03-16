@@ -1,28 +1,43 @@
-import { useFetcher } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { FormEvent, useState } from "react";
 
 export default function Newsletter() {
-  const fetcher = useFetcher<{ success?: boolean; error?: string }>();
-  const formRef = useRef<HTMLFormElement>(null);
-  const isSubmitting = fetcher.state !== "idle";
-  const isSuccess = fetcher.data?.success;
-  const error = fetcher.data?.error;
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
-  useEffect(() => {
-    if (isSuccess) {
-      formRef.current?.reset();
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
     }
-  }, [isSuccess]);
+
+    const formData = new FormData(form);
+    const email = formData.get("email");
+
+    if (typeof email === "string") {
+      setSubmittedEmail(email);
+      setIsSubscribed(true);
+      form.reset();
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4 lg:col-span-1 md:col-span-2">
       <h3 className="text-base font-semibold text-gray-100 uppercase tracking-wide">Newsletter</h3>
       <p className="text-sm">Subscribe to get special offers and updates</p>
 
-      {isSuccess ? (
-        <p className="text-sm text-green-400 font-medium">Thanks for subscribing! 🎉</p>
+      {isSubscribed ? (
+        <div className="rounded-md border border-emerald-500/30 bg-emerald-500/10 p-3">
+          <p className="text-sm font-semibold text-emerald-300">Subscription Confirmed</p>
+          <p className="mt-1 text-xs text-emerald-100/90">
+            {submittedEmail} has been marked as subscribed for this project demo.
+            This is a portfolio simulation, so no real newsletter enrollment was created.
+          </p>
+        </div>
       ) : (
-        <fetcher.Form method="post" action="/api/newsletter" ref={formRef} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
           <input
             type="email"
             name="email"
@@ -33,20 +48,17 @@ export default function Newsletter() {
           />
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="px-5 py-2 bg-primary text-white rounded-md font-semibold text-sm hover:bg-primary-dark transition disabled:opacity-60"
+            className="px-5 py-2 bg-primary text-white rounded-md font-semibold text-sm hover:bg-primary-dark transition"
           >
-            {isSubmitting ? "..." : "Subscribe"}
+            Subscribe
           </button>
-        </fetcher.Form>
+        </form>
       )}
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
-
-      <div className="flex gap-3">
-        <a href="#" aria-label="Facebook" className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition">FB</a>
-        <a href="#" aria-label="Instagram" className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition">IG</a>
-        <a href="#" aria-label="Twitter" className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition">TW</a>
+      <div className="flex flex-wrap gap-3">
+        <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition">FB</a>
+        <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition">IG</a>
+        <a href="https://www.twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter" className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition">TW</a>
       </div>
     </div>
   );

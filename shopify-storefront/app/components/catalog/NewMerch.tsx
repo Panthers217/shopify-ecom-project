@@ -14,12 +14,12 @@ export default function NewMerch({
 }: NewMerchProps) {
   return (
     <section className="py-12">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3 md:text-4xl">
             {title}
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-base text-gray-600 sm:text-lg">
             {description}
           </p>
         </div>

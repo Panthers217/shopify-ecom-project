@@ -6,8 +6,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-gray-400 pt-16 pb-6 mt-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="mb-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-10">
           <div className="flex flex-col gap-4">
             <h3 className="text-base font-semibold text-gray-100 uppercase tracking-wide">Shop</h3>
             <ul className="flex flex-col gap-2.5">
@@ -53,11 +53,11 @@ export default function Footer() {
           <Newsletter />
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-800 gap-4">
+        <div className="flex flex-col gap-4 border-t border-gray-800 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-left">
           <p className="text-sm text-gray-500" suppressHydrationWarning>
             &copy; {currentYear} Shopify Storefront Demo. Built with Remix + TypeScript.
           </p>
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-sm md:justify-end">
             <span className="text-gray-500">We accept:</span>
             <span className="text-gray-400">💳 VISA • MC • AMEX</span>
           </div>

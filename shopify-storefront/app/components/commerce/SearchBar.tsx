@@ -76,7 +76,7 @@ export default function SearchBar() {
     <div ref={containerRef} className="relative w-full max-w-2xl">
       {/* Search Input */}
       <div className="relative">
-        <div className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm focus-within:border-gray-500 focus-within:shadow-md transition-all">
+        <div className="flex items-center rounded-lg border border-gray-300 bg-white shadow-sm transition-all focus-within:border-gray-500 focus-within:shadow-md">
           <svg
             className="w-5 h-5 text-gray-400 ml-3"
             fill="none"
@@ -98,7 +98,7 @@ export default function SearchBar() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setIsFocused(true)}
-            className="flex-1 px-4 py-3 bg-white outline-none text-sm"
+            className="min-w-0 flex-1 bg-white px-4 py-3 text-sm outline-none"
             autoComplete="off"
           />
 
@@ -134,7 +134,7 @@ export default function SearchBar() {
 
       {/* Search Results Dropdown */}
       {isFocused && (query || results.length > 0) && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-xl z-50 max-h-[600px] overflow-y-auto">
+        <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[70vh] overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-xl">
           {isLoading && query && results.length === 0 && (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
@@ -145,9 +145,9 @@ export default function SearchBar() {
           )}
 
           {results.length > 0 && (
-            <div className="p-6 relative">
+            <div className="relative p-4 sm:p-6">
               {isLoading && query && (
-                <div className="absolute inset-x-6 top-2 z-10 flex justify-end">
+                <div className="absolute inset-x-4 top-2 z-10 flex justify-end sm:inset-x-6">
                   <span className="text-xs text-gray-500 bg-white/90 px-2 py-1 rounded">
                     Updating...
                   </span>

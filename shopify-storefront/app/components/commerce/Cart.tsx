@@ -17,7 +17,7 @@ const CartLineItem = memo(function CartLineItem({
   onRemove: (lineId: string) => Promise<boolean>;
 }) {
   return (
-    <div className="flex gap-4 border-b border-gray-200 pb-4">
+    <div className="flex flex-col gap-4 border-b border-gray-200 pb-4 sm:flex-row">
       {/* Product Image */}
       <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
         {item.image && (
@@ -30,7 +30,7 @@ const CartLineItem = memo(function CartLineItem({
       </div>
 
       {/* Product Details */}
-      <div className="flex-1 flex flex-col justify-between">
+      <div className="flex flex-1 flex-col justify-between gap-4">
         <div>
           <a
             href={`/products/${item.handle}`}
@@ -44,8 +44,8 @@ const CartLineItem = memo(function CartLineItem({
         </div>
 
         {/* Quantity and Remove */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 border border-gray-300 rounded">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex w-fit items-center gap-2 rounded border border-gray-300">
             <button
               onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
               disabled={item.quantity <= 1 || loading}
@@ -66,7 +66,7 @@ const CartLineItem = memo(function CartLineItem({
           <button
             onClick={() => onRemove(item.id)}
             disabled={loading}
-            className="text-sm text-red-600 hover:text-red-700 disabled:text-gray-300"
+            className="text-left text-sm text-red-600 hover:text-red-700 disabled:text-gray-300 sm:text-right"
           >
             Remove
           </button>
@@ -74,7 +74,7 @@ const CartLineItem = memo(function CartLineItem({
       </div>
 
       {/* Line Total */}
-      <div className="text-right">
+      <div className="text-left sm:text-right">
         <p className="font-semibold text-gray-900">
           ${(item.price * item.quantity).toFixed(2)}
         </p>
@@ -107,8 +107,8 @@ export default function Cart() {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="min-h-screen bg-white p-6">
-        <div className="max-w-4xl mx-auto text-center py-12">
+      <div className="min-h-screen bg-white px-4 py-6 sm:p-6">
+        <div className="max-w-4xl mx-auto py-12 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Your Cart</h1>
           <p className="text-lg text-gray-600 mb-6">Your cart is empty</p>
           <a 
@@ -126,7 +126,7 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="max-w-4xl mx-auto px-4 py-6 sm:p-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Your Cart</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -147,7 +147,7 @@ export default function Cart() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-50 rounded-lg p-6 sticky top-6">
+            <div className="rounded-lg bg-gray-50 p-6 lg:sticky lg:top-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
 
               <div className="space-y-3 mb-6 border-b border-gray-200 pb-6">
