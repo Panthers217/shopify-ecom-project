@@ -2,7 +2,7 @@
 
 client_id = "1746e4c679bcc7b4a03a2a5187771729"
 name = "Evergreen Apparel Co"
-application_url = "https://example.com"
+application_url = "https://vigilant-pancake-xxj554wr6j93vpj-5173.app.github.dev"
 embedded = true
 
 [webhooks]

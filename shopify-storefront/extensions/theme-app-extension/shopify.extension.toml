@@ -1,0 +1,7 @@
+
+uid = "d68fd1f5-4e48-959e-8faa-fe9638a1de9c212d8f92"
+type = "theme"
+name = "Evergreen Apparel Theme Extension"
+
+[build]
+automatically_build = true
