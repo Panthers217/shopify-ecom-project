@@ -674,3 +674,100 @@ export const GET_PAGES_QUERY = `
     }
   }
 `;
+
+// ============================================================================
+// METAOBJECT QUERIES
+// ============================================================================
+
+/**
+ * Get Feature Banner Metaobject by Handle
+ * Fetches a specific banner configuration from metaobjects
+ * 
+ * Usage:
+ * const banner = await storefrontFetch(GET_FEATURE_BANNER_QUERY, {
+ *   handle: "spring-collection-2026"
+ * });
+ */
+export const GET_FEATURE_BANNER_QUERY = `
+  query GetFeatureBanner($handle: String!) {
+    metaobject(handle: { handle: $handle, type: "feature_banner" }) {
+      id
+      handle
+      type
+      fields {
+        key
+        value
+        type
+        reference {
+          ... on MediaImage {
+            image {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * Get All Feature Banners
+ * Fetches all banner configurations (useful for admin/preview)
+ */
+export const GET_ALL_FEATURE_BANNERS_QUERY = `
+  query GetAllFeatureBanners($first: Int = 10) {
+    metaobjects(type: "feature_banner", first: $first) {
+      edges {
+        node {
+          id
+          handle
+          fields {
+            key
+            value
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * Get Shop Metafields (including active banner reference)
+ * Fetches shop-level settings like which banner to display
+ */
+export const GET_SHOP_METAFIELDS_QUERY = `
+  query GetShopMetafields {
+    shop {
+      id
+      name
+      metafield(namespace: "custom", key: "active_homepage_banner") {
+        id
+        namespace
+        key
+        value
+        type
+        reference {
+          ... on Metaobject {
+            id
+            handle
+            type
+            fields {
+              key
+              value
+              type
+              reference {
+                ... on MediaImage {
+                  image {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
